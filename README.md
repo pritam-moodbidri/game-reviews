@@ -11,6 +11,9 @@ API for video game review, that scrapes reviews for video games on different pla
 	- Getting review from Metacritic (www.gamespot.com)
 	- Getting review from Metacritic and GameSpot
 	
+- Certain Game titles have roman numbers for their sequels. In case the user uses decimal numbers for a game title that has roman numerals, this API will do the decimal 
+to roman numeral conversion to see if the game with that title exists
+	
 - Used Jsoup for parsing the web pages
 
 - Used google-gson for JSON conversion
