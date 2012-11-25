@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>GameReviewsAPI</display-name>
+  <servlet>
+    <description></description>
+    <display-name>GameReviewsServlet</display-name>
+    <servlet-name>GameReviewsServlet</servlet-name>
+    <servlet-class>com.gamereviews.servlet.GameReviewsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GameReviewsServlet</servlet-name>
+    <url-pattern>/game-reviews</url-pattern>
+    <url-pattern>/game-reviews/metacritic</url-pattern>
+    <url-pattern>/game-reviews/gamespot</url-pattern>
+  </servlet-mapping>
+</web-app>
