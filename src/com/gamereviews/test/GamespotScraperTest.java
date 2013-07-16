@@ -22,7 +22,7 @@ public class GamespotScraperTest {
     public void testThatNullOrEmptyStringRequestsReturnNull() {
         assertNull(gamespotScraper.getReview(""));
         assertNull(gamespotScraper.getReview(" "));
-        assertNull(gamespotScraper.getReview("	"));
+        assertNull(gamespotScraper.getReview("    "));
         assertNull(gamespotScraper.getReview(null));
     }
 
@@ -36,8 +36,9 @@ public class GamespotScraperTest {
 
     @Test
     public void testThatValidGameTitlesReturnPopulatedReviews() {
-        GamespotReview review;
-        assertNotNull(review = gamespotScraper.getReview("fifa soccer 13"));
+        GamespotReview review = gamespotScraper.getReview("fifa soccer 13");
+
+        assertNotNull(review);
         assertNotNull(review.getGameTitle());
         assertNotNull(review.getGenre());
         assertNotNull(review.getReleaseDate());
@@ -56,7 +57,6 @@ public class GamespotScraperTest {
 
         assertNotNull(reviewRetrievedByDecimalNumber);
         assertNotNull(reviewRetrievedByRomanNumeral);
-
         assertEquals(reviewRetrievedByDecimalNumber.getGameTitle(), reviewRetrievedByRomanNumeral.getGameTitle());
     }
 
