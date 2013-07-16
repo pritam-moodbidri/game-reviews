@@ -1,48 +1,79 @@
 package com.gamereviews.test;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.gamereviews.model.MetacriticReview;
 import com.gamereviews.scraper.MetacriticScraper;
+import org.junit.Before;
+import org.junit.Test;
+
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class MetacriticScraperTest {
 
-	@Test
-	public void testGetReview() {
-		MetacriticScraper metacriticScraper = new MetacriticScraper();
-		
-		
-		Assert.assertNull(metacriticScraper.getReview(""));
-		Assert.assertNull(metacriticScraper.getReview(" "));
-		Assert.assertNull(metacriticScraper.getReview("	"));
-		Assert.assertNull(metacriticScraper.getReview(null));
-		
-		// Incorrect Game title
-		Assert.assertNull(metacriticScraper.getReview("12345"));
-		Assert.assertNull(metacriticScraper.getReview("20"));
-		Assert.assertNull(metacriticScraper.getReview("!@#$"));
-		Assert.assertNull(metacriticScraper.getReview("AaaBBBxx122##$@!"));
-		
-		// Correct Game title
-		MetacriticReview review;
-		Assert.assertNotNull(review = metacriticScraper.getReview("fifa soccer 13"));
-		Assert.assertNotNull(review.getGameTitle());
-		Assert.assertNotNull(review.getGenre());
-		Assert.assertNotNull(review.getReleaseDate());
-		Assert.assertNotNull(review.getPublisher());
-		Assert.assertNotNull(review.getScorePS3());
-		Assert.assertNotNull(review.getScoreXBOX360());
-		Assert.assertNotNull(review.getScorePC());
-		Assert.assertNotNull(review.getScore3DS());
-		Assert.assertNotNull(review.getScorePS_VITA());
-		Assert.assertNotNull(review.getScoreIOS());
-		
-		Assert.assertNotNull(metacriticScraper.getReview("call of duty black ops 2"));
-		Assert.assertNotNull(metacriticScraper.getReview("call of duty black ops II"));
-		Assert.assertNotNull(metacriticScraper.getReview("Portal 2"));
-		Assert.assertNull(metacriticScraper.getReview("Portal II"));
-		Assert.assertNotNull(metacriticScraper.getReview("Temple Run"));
-	}
+    private MetacriticScraper metacriticScraper;
+
+    @Before
+    public void setUp() throws Exception {
+        metacriticScraper = new MetacriticScraper();
+    }
+
+    @Test
+    public void testThatNullOrEmptyStringRequestsReturnNull() {
+        assertNull(metacriticScraper.getReview(""));
+        assertNull(metacriticScraper.getReview(" "));
+        assertNull(metacriticScraper.getReview("    "));
+        assertNull(metacriticScraper.getReview(null));
+    }
+
+    @Test
+    public void testThatInvalidGameTitlesReturnNull() {
+        assertNull(metacriticScraper.getReview("12345"));
+        assertNull(metacriticScraper.getReview("20"));
+        assertNull(metacriticScraper.getReview("!@#$"));
+        assertNull(metacriticScraper.getReview("AaaBBBxx122##$@!"));
+    }
+
+    @Test
+    public void testThatValidGameTitlesReturnPopulatedReviews() {
+        MetacriticReview review = metacriticScraper.getReview("fifa soccer 13");
+
+        assertNotNull(review);
+        assertNotNull(review.getGameTitle());
+        assertNotNull(review.getGenre());
+        assertNotNull(review.getReleaseDate());
+        assertNotNull(review.getPublisher());
+        assertNotNull(review.getScorePS3());
+        assertNotNull(review.getScoreXBOX360());
+        assertNotNull(review.getScorePC());
+        assertNotNull(review.getScore3DS());
+        assertNotNull(review.getScorePS_VITA());
+        assertNotNull(review.getScoreIOS());
+    }
+
+    @Test
+    public void testThatGamesWithTitlesThatContainRomanNumeralsCanBeFoundByUsingRomanNumeralsOrDecimalNumbers() {
+        MetacriticReview reviewRetrievedByDecimalNumber = metacriticScraper.getReview("call of duty black ops 2");
+        MetacriticReview reviewRetrievedByRomanNumeral = metacriticScraper.getReview("call of duty black ops II");
+
+        assertNotNull(reviewRetrievedByDecimalNumber);
+        assertNotNull(reviewRetrievedByRomanNumeral);
+        assertEquals(reviewRetrievedByDecimalNumber.getGameTitle(), reviewRetrievedByRomanNumeral.getGameTitle());
+    }
+
+    @Test
+    public void testThatGamesWithTitlesThatContainDecimalNumbersCanOnlyBeFoundByUsingDecimalNumbers() {
+        MetacriticReview reviewRetrievedByDecimalNumber = metacriticScraper.getReview("Portal 2");
+        MetacriticReview reviewRetrievedByRomanNumeral = metacriticScraper.getReview("Portal II");
+
+        assertNotNull(reviewRetrievedByDecimalNumber);
+        assertNull(reviewRetrievedByRomanNumeral);
+    }
+
+    @Test
+    public void testThatIOSGameRatingsCanBeScraped() {
+        MetacriticReview review = metacriticScraper.getReview("Temple Run");
+        assertNotNull(review);
+    }
 
 }
