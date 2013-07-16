@@ -22,7 +22,7 @@ public class MetacriticScraperTest {
     public void testThatNullOrEmptyStringRequestsReturnNull() {
         assertNull(metacriticScraper.getReview(""));
         assertNull(metacriticScraper.getReview(" "));
-        assertNull(metacriticScraper.getReview("	"));
+        assertNull(metacriticScraper.getReview("    "));
         assertNull(metacriticScraper.getReview(null));
     }
 
@@ -36,8 +36,9 @@ public class MetacriticScraperTest {
 
     @Test
     public void testThatValidGameTitlesReturnPopulatedReviews() {
-        MetacriticReview review;
-        assertNotNull(review = metacriticScraper.getReview("fifa soccer 13"));
+        MetacriticReview review = metacriticScraper.getReview("fifa soccer 13");
+
+        assertNotNull(review);
         assertNotNull(review.getGameTitle());
         assertNotNull(review.getGenre());
         assertNotNull(review.getReleaseDate());
@@ -74,4 +75,5 @@ public class MetacriticScraperTest {
         MetacriticReview review = metacriticScraper.getReview("Temple Run");
         assertNotNull(review);
     }
+
 }
